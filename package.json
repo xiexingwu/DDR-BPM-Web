@@ -1,0 +1,33 @@
+{
+  "name": "ddr-bpm-web",
+  "version": "1.0.0",
+  "description": "DDR BPM website",
+  "main": "src/index.jsx",
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiexingwu/DDR-BPM-Web.git"
+  },
+  "author": "Michael Xie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xiexingwu/DDR-BPM-Web/issues"
+  },
+  "homepage": "https://github.com/xiexingwu/DDR-BPM-Web#readme",
+  "devDependencies": {
+    "vite": "^3.0.0",
+    "vite-plugin-solid": "^2.3.0"
+  },
+  "dependencies": {
+    "@fortawesome/free-regular-svg-icons": "^6.1.1",
+    "babel-preset-solid": "^1.4.6",
+    "solid-bootstrap": "^1.0.8",
+    "solid-fa": "^0.1.0",
+    "solid-js": "^1.4.7"
+  }
+}

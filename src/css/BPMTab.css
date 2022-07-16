@@ -1,0 +1,14 @@
+#BPMInput {
+  padding: 1em
+}
+#BPMInput > .row > .col > * {
+  display: inline-block;
+  padding: 0px 0.5em;
+}
+#BPMInput input {
+  max-width: 8em;
+}
+#BPMInput input[data-valid="false"] {
+  background-color: rgba(255, 0, 0, 0.1);
+}
+

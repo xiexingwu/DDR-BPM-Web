@@ -1,0 +1,22 @@
+{
+    "name": "DDR BPM",
+    "short_name": "DDR BPM",
+    "icons": [
+        {
+            "src": "/assets/favicon/android-chrome-512x512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "maskable"
+        }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "id": "com.xiexingwu.DDR-BPM",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "lang": "en",
+    "orientation": "portrait",
+    "screenshots": [
+
+    ]
+}

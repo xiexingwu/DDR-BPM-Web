@@ -1,0 +1,31 @@
+table.BPMWheel{
+  margin: 0px auto;
+  max-width: 20em;
+}
+
+table.BPMWheel th {
+  text-align: center;
+  padding-top: 0;
+}
+
+table.BPMWheel * {
+  padding: 0 0 0 0;
+}
+
+table.BPMWheel td:not(.mod){
+  text-align: center;
+}
+
+table.BPMWheel .mod *{
+  display: inline-block;
+}
+table.BPMWheel .mod :first-child{
+  width: 40%;
+  text-align: right;
+}
+table.BPMWheel .mod :nth-child(2){
+  width: 0.4em;
+}
+table.BPMWheel .mod :last-child{
+  width: 40%;
+}
