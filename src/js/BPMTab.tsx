@@ -70,15 +70,13 @@ export const BPMTab: Component = (props) => {
   createEffect(() => console.log("bpmStrClean", bpmStrClean()));
 
   return (
-    <Container>
+    // <Container class="tab" id="BPMTab">
       <Row>
         <Col>
-          <div class="tab" id="BPMTab">
             <BPMInput value={bpmStr} setter={setBpmStr} />
             <BPMWheel bpms={bpms()} />
-          </div>
         </Col>
       </Row>
-    </Container>
+    // </Container>
   )
 }
