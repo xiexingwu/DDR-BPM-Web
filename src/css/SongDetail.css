@@ -1,0 +1,32 @@
+/* title translit */
+.song-detail {
+  justify-content: center;
+}
+
+.song-detail span {
+  text-align: center;
+}
+
+.song-detail-title {
+  justify-content: center;
+}
+.song-detail-title > span:first-of-type{
+  font-size: large;
+  font-weight: bold;
+}
+.song-detail-title > span:nth-of-type(2){
+  font-size: small;
+}
+
+.song-detail-summary {
+  justify-content: center;
+}
+
+.song-detail-summary > span {
+  margin: 0.25em 0;
+}
+
+span.song-version {
+  font-size: small;
+  color: gray;
+}

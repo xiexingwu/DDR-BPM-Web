@@ -1,4 +1,8 @@
+install:
+	pnpm install
 
+build:
+	pnpm run build
 
-local:
-	firebase serve --only hosting
+deploy: build
+	firebase deploy

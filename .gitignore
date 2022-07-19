@@ -67,3 +67,7 @@ node_modules/
 
 # dist
 dist
+dev-dist
+
+# npm config
+.npmrc

@@ -1,0 +1,33 @@
+#song-tab-nav input, #song-tab-nav select {
+  margin-top: 0.5em;
+  /* font-size: smaller; */
+}
+#song-tab-nav input {
+  margin-bottom: 0.5em;
+}
+
+#song-tab-list hr {
+  margin: 0.2em 0;
+}
+
+.song-row {
+  padding:0;
+}
+.song-row:hover {
+  background-color: rgba(30, 30, 30, 0.3);
+}
+
+.song-row-main {
+  justify-content: space-evenly;
+  color: black;
+}
+
+.song-row-secondary {
+  justify-content: space-evenly;
+  text-align: right;
+  color: gray;
+  flex-grow: 0;
+}
+.song-row-secondary span {
+  font-size: small;
+}

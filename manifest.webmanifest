@@ -1,0 +1,37 @@
+{
+  "name": "DDR BPM Web",
+  "short_name": "DDR BPM",
+  "icons": [
+    {
+      "src": "/favicon/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/favicon/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "id": "com.xiexingwu.DDR-BPM",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "lang": "en",
+  "orientation": "portrait"
+}

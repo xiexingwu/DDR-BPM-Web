@@ -1,0 +1,30 @@
+/* #tab-content {
+  display: flex;
+  justify-content: center;
+} */
+
+.jacket {
+  box-sizing: content-box;
+  padding: 5px;
+}
+
+a.song-link{
+  padding:0;
+}
+
+.back-arrow {
+  text-decoration: none;
+}
+
+/* .back-arrow:hover{
+  text-decoration: underline;
+} */
+
+.back-arrow * {
+  color: #0a58ca;
+}
+
+.back-arrow .fa {
+  height: 2em !important;
+  width: 2em !important; 
+}

@@ -1,99 +1,143 @@
-import { createEffect, createSignal, onMount, Suspense, For } from "solid-js";
-import { Navbar, Nav, Tab, Container } from "solid-bootstrap"
+import { lazy, createEffect, createSignal, onMount, For } from "solid-js";
+import { Navbar, Nav, Tab, Container, NavDropdown } from "solid-bootstrap";
+import { Routes, Route } from "solid-app-router";
+import Fa from "solid-fa";
 
-import { fetchSong } from './js/Song';
-import type { Song } from './js/Song'; 
-import { BPMTab } from "./js/BPMTab";
-import { SongTab } from "./js/SongTab";
+import { library, dom } from "@fortawesome/fontawesome-svg-core";
+import { faAppStoreIos } from "@fortawesome/free-brands-svg-icons";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+library.add(faGear)
+library.add(faAppStoreIos)
+
+import { useViewModel } from "./js/ViewModel";
+
+import { fetchSong, genSongPath } from './js/Song';
+import type { Song } from './js/Song';
+import { TabName } from "./js/Tabs";
+
+// const BPMTab = lazy(() => import("./js/BPMTab"));
+// const SongTab = lazy(() => import("./js/SongTab"));
+import BPMTab from "./components/BPMTab";
+import SongTab from "./components/SongTab";
+import SettingsTab from "./components/SettingsTab";
+import SongDetail from "./components/SongDetail";
+
 
 export const [songs, setSongs] = createSignal<Song[]>([]);
 
 const fetchAllSongs = async () =>
-  (await fetch("/src/assets/all_songs.txt")).text().then(txt =>
+  (await fetch("/all_songs.txt")).text().then(txt =>
     txt.split('\n').sort()
   )
 
 async function loadSongs() {
   const allSongs = await fetchAllSongs();
-  let songs: Song[] = [];
-  console.log("allSongs", allSongs);
-  allSongs.forEach(async (name) => songs.push(await fetchSong(name)));
+  // console.log("allSongs", allSongs);
+  const fetchSongs = allSongs.map(fetchSong);
+  let songs = await Promise.all(fetchSongs)
   setSongs(songs)
-  console.log("loaded songs:", songs);
+  // console.log("loaded songs:", songs);
 }
 
-enum TabName {
-  BPM = "BPM",
-  SONGS = "Songs"
-}
-
+// Main
 function App() {
 
   /* Load songs */
   onMount(loadSongs);
 
-  /* Setup Tabs */
-  const [tabKey, setTabKey] = createSignal(TabName.BPM);
-  // createEffect(() => console.log("tabKey is", tabKey()))
+  const { viewModel, setViewModel } = useViewModel();
 
-  const bpmPane = {
+  /* Setup Panes */
+  const bpmPane = () => ({
     name: TabName.BPM,
+    route: TabName.BPM,
     component: <BPMTab />
-  };
-  const songPane = {
+  });
+
+  const songPane = () => ({
     name: TabName.SONGS,
-    component: <SongTab songs={songs()}/>
-  };
-  const tabs = [
-    bpmPane, songPane
+    route: TabName.SONGS,
+    component: <SongTab songs={songs()} />
+  });
+
+  const settingsPane = () => ({
+    name: TabName.SETTINGS,
+    route: TabName.SETTINGS,
+    component: <SettingsTab/>
+  })
+
+  const tabs = () => [
+    bpmPane(), songPane()
   ];
+
 
   /* Main app */
   return (<Container fluid="lg">
-    <Tab.Container activeKey={tabKey()}>
+    <Tab.Container activeKey={viewModel().tab()}>
       <Navbar sticky="top" bg="light" expand>
-        {/* <Container> */}
-          <Navbar.Brand>
-            <img alt="DDR BPM Logo" src="/src/assets/favicon/apple-touch-icon.png" width={48} height={48} />
-          </Navbar.Brand>
-        {/* </Container> */}
 
-        {/* <Container> */}
-          <Navbar.Toggle aria-controls="root-navbar" />
-        {/* </Container> */}
+        <Navbar.Brand href="/">
+          <img alt="DDR BPM Logo" src="/favicon/apple-touch-icon.png" width={48} height={48} />
+        </Navbar.Brand>
 
-        {/* <Container> */}
-          <Navbar.Collapse id="root-navbar">
-            <Nav class="me-auto" onSelect={(k: TabName) => setTabKey(k)}>
-              <For each={tabs}>{(tab, i) =>
-                <Nav.Link eventKey={tab.name}>
-                  {tab.name}
-                </Nav.Link>
-              }</For>
-            </Nav>
-          </Navbar.Collapse>
-        {/* </Container> */}
+        <Navbar.Toggle aria-controls="root-navbar"/>
+
+        <Navbar.Collapse id="root-navbar">
+          <Nav onSelect={(k: TabName) => setViewModel().setTab(k)} style="width:100%">
+            {/* Tabs */}
+            <For each={tabs()}>{(tab, i) =>
+              <Nav.Link href={`/${tab.name}`}>
+                {tab.name}
+              </Nav.Link>
+            }</For>
+
+            {/* Dropdown menu */}
+            <NavDropdown
+              align={ {md: 'start'} }
+              title={<Fa icon={faGear} />}
+              class="ms-auto"
+            >
+              <Nav.Link href={settingsPane().route}>
+                {settingsPane().name}
+              </Nav.Link>
+              <NavDropdown.Divider/>
+              <NavDropdown.Item href="https://apps.apple.com/au/app/ddr-bpm/id1628838191">
+                <>
+                  <span class="me-1">iOS App</span>
+                  <Fa icon={faAppStoreIos} />
+                </>
+              </NavDropdown.Item>
+              <NavDropdown.Item href="https://www.paypal.com/donate/?hosted_button_id=2R64RY6ZL52EW">
+                Donate
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
 
       </Navbar>
 
-      {/* <Container> */}
-        <Suspense fallback={<div>Loading...</div>}>
+      <Tab.Content id="tab-content">
+        {/* Tabs */}
+        <Routes>
+          <Route path="/" element={bpmPane().component} />
 
-          <Tab.Content>
-            <For each={tabs}>{(tab, i) =>
-              <Tab.Pane eventKey={tab.name} title={tab.name}>
-                  {tab.component}
-              </Tab.Pane>
-            }</For>
-          </Tab.Content>
+          <For each={tabs()}>{(tab, i) =>
+            <Route path={tab.route as string} element={tab.component} />
+          }</For>
 
-        </Suspense>
-      {/* </Container> */}
+          <Route path={settingsPane().route} element={settingsPane().component} />
+        </Routes>
+
+        {/* Songs */}
+        <Routes>
+          <For each={songs()}>{(song, i) =>
+            <Route path={genSongPath(song)} element={<SongDetail song={song} />} />
+          }</For>
+        </Routes>
+      </Tab.Content>
 
     </Tab.Container>
-
   </Container>)
-
 }
 
 export default App;

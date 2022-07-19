@@ -1,31 +1,47 @@
-table.BPMWheel{
-  margin: 0px auto;
-  max-width: 20em;
+table.bpm-wheel{
+  width: calc(100% - 3em);
+  align-self: center;
+  /* display:flexbox; */
+  max-width: 768px;
 }
 
-table.BPMWheel th {
+table.bpm-wheel th {
+  align-self: center;
   text-align: center;
   padding-top: 0;
 }
 
-table.BPMWheel * {
+table.bpm-wheel * {
   padding: 0 0 0 0;
 }
 
-table.BPMWheel td:not(.mod){
+table.bpm-wheel td:not(.mod){
   text-align: center;
 }
 
-table.BPMWheel .mod *{
+table.bpm-wheel .mod *{
   display: inline-block;
 }
-table.BPMWheel .mod :first-child{
+/* Align speed mod to decimal point (2nd-child) */
+table.bpm-wheel .mod :first-child{
   width: 40%;
   text-align: right;
 }
-table.BPMWheel .mod :nth-child(2){
-  width: 0.4em;
+table.bpm-wheel .mod :nth-child(2){
+  width: 0.3em;
 }
-table.BPMWheel .mod :last-child{
+table.bpm-wheel .mod :last-child{
   width: 40%;
+}
+
+table.bpm-wheel > tbody {
+  width: 100%;
+  max-height: 10em;
+  overflow-y: auto;
+  display: inline-block;
+  scrollbar-width: none; /* Firefox */
+}
+
+table.bpm-wheel > tbody::-webkit-scrollbar {
+  display:none; /* Safari, Chrome */
 }

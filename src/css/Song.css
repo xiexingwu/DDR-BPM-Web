@@ -1,0 +1,25 @@
+.diff-text > span.beginner {
+  color: #0095c4;
+}
+.diff-text > span.easy {
+  color: #c47e01;
+}
+.diff-text > span.medium {
+  color: #c41c26;
+}
+.diff-text > span.hard {
+  color: #33b628;
+}
+.diff-text > span.challenge {
+  color: #ec38ff;
+}
+.diff-text > span:nth-of-type(2n){
+  color: #000000;
+}
+
+.display-bpm {
+  justify-content: center;
+}
+span.dominant-bpm {
+  font-weight: bold;
+}

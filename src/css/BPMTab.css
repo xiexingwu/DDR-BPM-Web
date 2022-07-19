@@ -1,14 +1,19 @@
-#BPMInput {
-  padding: 1em
+#bpm-tab {
+  justify-content: center;
 }
-#BPMInput > .row > .col > * {
+
+#bpm-input {
+  padding: 1em;
+  justify-content: center;
+}
+#bpm-input > * {
   display: inline-block;
   padding: 0px 0.5em;
 }
-#BPMInput input {
+#bpm-input > input {
   max-width: 8em;
 }
-#BPMInput input[data-valid="false"] {
+#bpm-input > input[data-valid="false"] {
   background-color: rgba(255, 0, 0, 0.1);
 }
 
