@@ -123,7 +123,7 @@ export default function SongTab(props: SongTabProps): JSX.Element {
   // createEffect(() => console.log('songs:', songs()))
   // createEffect(() => console.log('songGroups:', songGroups()))
 
-  createEffect(() => console.log('tab: ', viewModel().tab()))
+  // createEffect(() => console.log('tab: ', viewModel().tab()))
   // createRenderEffect(() => setViewModel().setTab(TabName.SONGS))
 
   return (
@@ -133,7 +133,10 @@ export default function SongTab(props: SongTabProps): JSX.Element {
       </Col>
 
       <Col md={9} id="song-tab-list">
-        <For each={filteredSongs()}>{(song, i) =>
+        <For 
+          each={filteredSongs()} 
+          fallback={<span>{viewModel().searchStr() == "" ? "Loading songs..." : "Searching " + viewModel().searchStr()}</span>}
+        >{(song, i) =>
           <>
             <Nav.Link href={genSongPath(song)} class="song-link">
               <SongRow song={song} />
