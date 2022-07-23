@@ -26,7 +26,7 @@ export const fetchSong = async (songName: string): Promise<Song> => {
 }
 
 export const genSongVers = (song: Song): string => {
-  return song.version.replace(/DDR\s?/,"");
+  return VersionType[song.version].replace(/DDR\s?/,"");
 }
 
 export const genSongPath = (song: Song): string => {

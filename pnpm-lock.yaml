@@ -15,6 +15,7 @@ importers:
       cross-env: ^7.0.3
       https-localhost: ^4.7.1
       plotly.js-basic-dist-min: ^2.13.1
+      scss: ^0.2.4
       solid-app-router: ^0.4.1
       solid-bootstrap: ^1.0.8
       solid-fa: ^0.1.0
@@ -42,6 +43,7 @@ importers:
       '@types/plotly.js': 2.12.1
       cross-env: 7.0.3
       https-localhost: 4.7.1
+      scss: 0.2.4
       vite: 3.0.2
       vite-plugin-pwa: 0.12.3_vite@3.0.2
       vite-plugin-solid: 2.3.0_solid-js@1.4.7+vite@3.0.2
@@ -2744,6 +2746,11 @@ packages:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
     dev: true
 
+  /ometa/0.2.2:
+    resolution: {integrity: sha512-LZuoK/yjU3FvrxPjUXUlZ1bavCfBPqauA7fsNdwi+AVhRdyk2IzgP3JRnevvjzQ6fKHdUw8YISshf53FmpHrng==}
+    engines: {node: '>= 0.2.0'}
+    dev: true
+
   /on-finished/2.4.1:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
     engines: {node: '>= 0.8'}
@@ -2992,6 +2999,13 @@ packages:
 
   /safer-buffer/2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+    dev: true
+
+  /scss/0.2.4:
+    resolution: {integrity: sha512-4u8V87F+Q/upVhUmhPnB4C1R11xojkRkWjExL2v0CX2EXTg18VrKd+9JWoeyCp2VEMdSpJsyAvVU+rVjogh51A==}
+    engines: {node: '>= 0.2.0'}
+    dependencies:
+      ometa: 0.2.2
     dev: true
 
   /select-hose/2.0.0:

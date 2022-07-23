@@ -1,28 +1,50 @@
+#song-tab {
+  position: relative;
+}
+
 #song-tab-nav input, #song-tab-nav select {
   margin-top: 0.5em;
-  /* font-size: smaller; */
 }
 #song-tab-nav input {
   margin-bottom: 0.5em;
 }
 
-#song-tab-list hr {
+#song-tab-list > hr {
+  margin: 0;
+  opacity: 1;
+  height: 0.2em;
+  background-color: rgb(220,220,220);
+  color: black;
+}
+
+.song-group hr {
   margin: 0.2em 0;
+  z-index: 100;
 }
 
 .song-group-header {
   align-items: baseline;
+  background-color: rgb(220,220,220);
+  border-radius: 0 !important;
 }
-
+.song-group-header.position-sticky{
+  top:74px;
+  z-index: 200;
+}
 .song-group-header span{
   font-size: large;
   font-weight: bold;
 }
 
 .song-group-header span.n-songs {
-  margin-left: 1em;
+  margin-left: 0.5em;
   font-size: smaller;
   color: gray;
+  align-self: flex-end;
+}
+
+.song-group-header .fa {
+  margin-left: auto;
 }
 
 .song-row {

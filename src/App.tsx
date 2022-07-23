@@ -21,6 +21,7 @@ import BPMTab from "./components/BPMTab";
 import SongTab from "./components/SongTab";
 import SettingsTab from "./components/SettingsTab";
 import SongDetail from "./components/SongDetail";
+import { InstallButton } from "./components/InstallComponents";
 
 
 
@@ -80,6 +81,8 @@ function App() {
         <Navbar.Toggle aria-controls="root-navbar"/>
 
         <Navbar.Collapse id="root-navbar">
+
+          {/* Tabs */}
           <Nav onSelect={(k: TabName) => setViewModel().setTab(k)} style="width:100%">
             {/* Tabs */}
             <For each={tabs()}>{(tab, i) =>
@@ -88,11 +91,12 @@ function App() {
               </Nav.Link>
             }</For>
 
-            {/* Dropdown menu */}
+            <div class='ms-auto'/>
+            <InstallButton />
+            {/* Dropdown menu (settings) */}
             <NavDropdown
               align={ {md: 'start'} }
               title={<Fa icon={faGear} />}
-              class="ms-auto"
             >
               <Nav.Link href={'/'+settingsPane().name}>
                 {settingsPane().name}

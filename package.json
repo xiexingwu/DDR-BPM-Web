@@ -24,6 +24,7 @@
     "@types/plotly.js": "^2.12.1",
     "cross-env": "^7.0.3",
     "https-localhost": "^4.7.1",
+    "scss": "^0.2.4",
     "vite": "^3.0.2",
     "vite-plugin-pwa": "^0.12.3",
     "vite-plugin-solid": "^2.3.0",

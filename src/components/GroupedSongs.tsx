@@ -1,9 +1,15 @@
-import { Accessor, Component, createEffect, For, lazy, Match, Resource, Setter, Show, Suspense, SuspenseList, Switch } from 'solid-js';
-import { Accordion, Nav, Stack } from 'solid-bootstrap';
+import { Accessor, Component, createEffect, For, JSX, lazy, Show, Suspense, SuspenseList } from 'solid-js';
+import { Card, Nav, Stack } from 'solid-bootstrap';
+
+import { Fa } from 'solid-fa';
+import { faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
 
 import { SortType, useViewModel } from '../js/ViewModel';
 import { genSongPath, Song } from '../js/Song';
 const SongRow = lazy(() => import("./SongRow"))
+
+library.add(faChevronDown, faChevronRight)
 
 export type SongGroup = {
   songs: Song[];
@@ -17,8 +23,9 @@ type GroupedSongsType = {
 }
 
 const GroupedSongsHeader: Component<GroupedSongsType> = (props) => {
-  const {viewModel} = useViewModel();
+  const { viewModel } = useViewModel();
   const n = () => props.songGroup.songs.length;
+  // const active = () => active
 
   let sortBy = "";
   let sortVal = props.songGroup.sortVal;
@@ -36,9 +43,13 @@ const GroupedSongsHeader: Component<GroupedSongsType> = (props) => {
   }
 
   return (
-    <Accordion.Header onClick={props.setActive}>
-      <Stack direction="horizontal" class="song-group-header">
-        <Show 
+    
+    <Card.Header 
+      onClick={props.setActive} 
+      class="song-group-header"
+    >
+      <Stack direction="horizontal">
+        <Show
           when={viewModel().searchStr() == ""}
           fallback={
             <span>Searching "{viewModel().searchStr()}": </span>
@@ -47,18 +58,20 @@ const GroupedSongsHeader: Component<GroupedSongsType> = (props) => {
           <span>{sortBy + sortVal}: </span>
         </Show>
         <span class="n-songs">{n()} songs</span>
+
+        <Fa icon={props.active!() ? faChevronDown : faChevronRight}/>
       </Stack>
-    </Accordion.Header>
+    </Card.Header>
   )
 }
 
 const GroupedSongsList: Component<GroupedSongsType> = (props) => {
-  const songs = () => props.songGroup.songs;
+  const songGroup = () => props.songGroup;
 
   return (
     <SuspenseList revealOrder="forwards" tail="hidden">
       <For
-        each={songs()}
+        each={songGroup().songs}
       >{(song, i) =>
         <Suspense>
           <Nav.Link href={genSongPath(song)} class="song-link">
@@ -70,17 +83,14 @@ const GroupedSongsList: Component<GroupedSongsType> = (props) => {
   )
 }
 
-export const GroupedSongs: Component<GroupedSongsType> = (props) => {
+export default function GroupedSongs(props: GroupedSongsType): JSX.Element {
   const songGroup = () => props.songGroup;
-  const active = () => props.active!();
-  // createEffect(() => console.log(songGroup().sortVal, "active:", active()))
 
   return (
-    <Stack>
-      <GroupedSongsHeader songGroup={songGroup()} setActive={props.setActive}/>
-
+    <Stack class='song-group'>
+      <GroupedSongsHeader songGroup={songGroup()} active={props.active} setActive={props.setActive} />
       <Show
-        when={active()}
+        when={props.active!()}
       >
         <GroupedSongsList songGroup={songGroup()} />
       </Show>

@@ -1,16 +1,16 @@
 import { createSignal, createEffect, Index, For, Show, Suspense } from "solid-js";
-import type { Component, JSX } from 'solid-js';
-import { Row, Col } from 'solid-bootstrap';
+import type { JSX } from 'solid-js';
+import { Row, Col, Stack } from 'solid-bootstrap';
+import { IOSInstallTip } from "./InstallComponents";
 
 
 export default function SettingsTab(props): JSX.Element {
 
   return (
-    <Row>
-      <Col>
-        <p>No settings available yet. Check back later!</p>
-      </Col>
-    </Row>
+    <Stack>
+      <p>No settings available yet. Check back later!</p>
+      <IOSInstallTip/>
+    </Stack>
   )
 }
 

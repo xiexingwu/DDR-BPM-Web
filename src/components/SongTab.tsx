@@ -1,11 +1,12 @@
-import { createSignal, createEffect, Index, For } from "solid-js";
+import { createSignal, createEffect, Index, For, lazy } from "solid-js";
 import type { Component, JSX } from 'solid-js';
-import { Row, Col, Form } from 'solid-bootstrap';
+import { Row, Col, Form, Accordion, Stack } from 'solid-bootstrap';
 
 import { SDType, SortType, useViewModel } from "../js/ViewModel";
 import { Song, VersionType } from '../js/Song';
 
-import { GroupedSongs } from './GroupedSongs';
+const GroupedSongs = lazy(() => import("./GroupedSongs"))
+// import GroupedSongs from './GroupedSongs';
 import type { SongGroup } from './GroupedSongs';
 
 import '../css/SongTab.css';
@@ -124,7 +125,7 @@ const SongTabList: Component = (props) => {
         sortGroup = (a, b) => {
           const A = Object.keys(VersionType).indexOf(a);
           const B = Object.keys(VersionType).indexOf(b);
-          console.log(A, a, B, b);
+          // console.log(A, a, B, b);
           return A-B;
         };
         break;
@@ -146,14 +147,47 @@ const SongTabList: Component = (props) => {
   const filteredSongs = () => filterSongs(songs());
   const songGroups = () => groupSongs(filteredSongs());
 
+  const setActiveGroup = (i: number): (() => void) => {
+    return () => {
+      const previous = viewModel().activeGroup();
+      const headers = document.querySelectorAll('.song-group-header')
+      const closePrevious = () => {
+        const previousHeader = headers[previous]//.children[0]
+        previousHeader.classList.remove('position-sticky')
+      }
+      const openNew = () => {
+        const newHeader = headers[i]//.children[0]
+        newHeader.classList.add('position-sticky')
+      }
+
+      switch (previous) {
+        case i:
+          setViewModel().setActiveGroup(-1);
+          closePrevious();
+          break;
+        default:
+          closePrevious();
+        case -1:
+          setViewModel().setActiveGroup(i);
+          openNew()
+          // break;
+      }
+    }
+  }
+
   return (
-    <For each={songGroups()}>{(songGroup, i) => 
-      <GroupedSongs 
-        songGroup={songGroup} 
-        active={() => viewModel().activeGroup() == i()} 
-        setActive={() => setViewModel().setActiveGroup(viewModel().activeGroup() == i() ? -1 : i())}
-      />
-    }</For>
+    <Stack id="song-tab-list">
+      <For each={songGroups()}>{(songGroup, i) => 
+        <>
+          <GroupedSongs
+            songGroup={songGroup}
+            active={() => viewModel().activeGroup() == i()}
+            setActive={setActiveGroup(i())}
+          />
+          <hr />
+        </>
+      }</For>
+    </Stack>
   )
 }
 
@@ -167,8 +201,8 @@ export default function SongTab(props): JSX.Element {
         <SongTabNav/>
       </Col>
 
-      <Col md={9} id="song-tab-list">
-        <SongTabList/>
+      <Col md={9}>
+          <SongTabList />
       </Col>
     </Row>
   )

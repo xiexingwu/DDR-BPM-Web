@@ -42,8 +42,7 @@ const manifest: Partial<ManifestOptions> = {
 }
 
 const pwaOptions: Partial<VitePWAOptions> = { 
-  // registerType: 'autoUpdate' ,
-  
+  registerType: 'autoUpdate',
   devOptions: {
     enabled: process.env.SW_DEV === 'true',
     navigateFallback: 'index.html',

@@ -3,6 +3,10 @@
   justify-content: center;
 } */
 
+#root {
+  margin-bottom: 74px;
+}
+
 .jacket {
   box-sizing: content-box;
   padding: 5px;
@@ -27,4 +31,8 @@ a.song-link{
 .back-arrow .fa {
   height: 2em !important;
   width: 2em !important; 
+}
+
+.install-component > .fa {
+  margin-right: 5px;
 }
