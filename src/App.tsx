@@ -50,19 +50,16 @@ function App() {
   /* Setup Panes */
   const bpmPane = () => ({
     name: TabName.BPM,
-    route: TabName.BPM,
     component: <BPMTab />
   });
 
   const songPane = () => ({
     name: TabName.SONGS,
-    route: TabName.SONGS,
     component: <SongTab />
   });
 
   const settingsPane = () => ({
     name: TabName.SETTINGS,
-    route: TabName.SETTINGS,
     component: <SettingsTab/>
   })
 
@@ -86,7 +83,7 @@ function App() {
           <Nav onSelect={(k: TabName) => setViewModel().setTab(k)} style="width:100%">
             {/* Tabs */}
             <For each={tabs()}>{(tab, i) =>
-              <Nav.Link href={`/${tab.name}`}>
+              <Nav.Link href={'/'+tab.name}>
                 {tab.name}
               </Nav.Link>
             }</For>
@@ -97,7 +94,7 @@ function App() {
               title={<Fa icon={faGear} />}
               class="ms-auto"
             >
-              <Nav.Link href={settingsPane().route}>
+              <Nav.Link href={'/'+settingsPane().name}>
                 {settingsPane().name}
               </Nav.Link>
               <NavDropdown.Divider/>
@@ -122,10 +119,10 @@ function App() {
           <Route path="/" element={bpmPane().component} />
 
           <For each={tabs()}>{(tab, i) =>
-            <Route path={'/'+tab.route as string} element={tab.component} />
+            <Route path={'/' +tab.name} element={tab.component} />
           }</For>
 
-          <Route path={settingsPane().route} element={settingsPane().component} />
+          <Route path={'/' +settingsPane().name} element={settingsPane().component} />
         </Routes>
 
         {/* Songs */}

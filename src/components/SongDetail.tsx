@@ -63,7 +63,7 @@ export default function SongDetail(props: SongDetailProps): JSX.Element {
 
   return (
     <Stack class="song-detail">
-      <BackArrow dst={TabName.SONGS}/>
+      <BackArrow dst={'/'+TabName.SONGS}/>
       <SongDetailHeader song={song()}/>
       <SongDetailSummary song={song()}/>
       {genChartDisplayBPM(chart())}
