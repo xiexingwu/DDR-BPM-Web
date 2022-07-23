@@ -11,6 +11,7 @@ import { BPMWheel } from './BPMWheel';
 import "../css/SongDetail.css";
 import BackArrow from "./BackArrow";
 import BPMPlot from "./BPMPlot";
+import { TabName } from "../js/Tabs";
 
 type SongDetailProps = {
   song: Song
@@ -41,7 +42,6 @@ const SongDetailSummary: Component<SongDetailProps> = (props) => {
   const { viewModel } = useViewModel();
 
   const song = () => props.song;
-  const chart = () => getChart(song(), viewModel());
   return (
     <Stack direction="horizontal" class="song-detail-summary py-2" gap={5}>
       <span class="song-version">{song().version}</span>
@@ -63,7 +63,7 @@ export default function SongDetail(props: SongDetailProps): JSX.Element {
 
   return (
     <Stack class="song-detail">
-      <BackArrow/>
+      <BackArrow dst={TabName.SONGS}/>
       <SongDetailHeader song={song()}/>
       <SongDetailSummary song={song()}/>
       {genChartDisplayBPM(chart())}

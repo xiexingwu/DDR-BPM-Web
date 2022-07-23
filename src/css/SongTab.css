@@ -10,6 +10,21 @@
   margin: 0.2em 0;
 }
 
+.song-group-header {
+  align-items: baseline;
+}
+
+.song-group-header span{
+  font-size: large;
+  font-weight: bold;
+}
+
+.song-group-header span.n-songs {
+  margin-left: 1em;
+  font-size: smaller;
+  color: gray;
+}
+
 .song-row {
   padding:0;
 }

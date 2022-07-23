@@ -1,20 +1,17 @@
-import { createSignal, createEffect, Index, For, Show, Suspense, createRenderEffect } from "solid-js";
+import { createSignal, createEffect, Index, For } from "solid-js";
 import type { Component, JSX } from 'solid-js';
-import { Row, Col, Accordion, Form, Nav } from 'solid-bootstrap';
+import { Row, Col, Form } from 'solid-bootstrap';
 
 import { SDType, SortType, useViewModel } from "../js/ViewModel";
-import { genSongPath, Song } from '../js/Song';
+import { Song, VersionType } from '../js/Song';
 
-import { SongRow } from './SongRow';
 import { GroupedSongs } from './GroupedSongs';
 import type { SongGroup } from './GroupedSongs';
 
 import '../css/SongTab.css';
-import { TabName } from "../js/Tabs";
 
-type SongTabProps = {
-  songs: Song[];
-}
+
+
 
 const SongTabNav: Component = (props) => {
   // createEffect(() => console.log("sorting by:", sortBy()))
@@ -68,64 +65,102 @@ const SongTabNav: Component = (props) => {
   )
 }
 
-export default function SongTab(props: SongTabProps): JSX.Element {
-
-  /* View Model */
+const SongTabList: Component = (props) => {
   const { viewModel, setViewModel } = useViewModel();
-  /* Apply viewModel */
+  const songs = () => viewModel().songs();
+
   const filterSongs = (songs: Song[]): Song[] => {
-    if (!viewModel().searchStr()) { return songs };
+    if (!viewModel().searchStr()) { setViewModel().setActiveGroup(-1); return songs };
     const filteredSongs = songs.filter(song => {
       const strs = [song.name, song.title, song.titletranslit];
       return strs.some(str => str.toLowerCase().includes(viewModel().searchStr().toLowerCase()))
     })
+    setViewModel().setActiveGroup(0);
     return filteredSongs
   }
 
   const groupSongs = (songs: Song[]): SongGroup[] => {
     const by = viewModel().sortBy();
-    if (by == SortType.NONE) {
+    if (viewModel().searchStr() != "" || by == SortType.NONE) { 
       return [{
         songs: songs,
-        sortBy: by,
-        sortVal: by
+        sortVal: "",
       }]
-    }
+    };
 
-    const group = (groups: any, song: Song) => {
-      if (song) {
-        (groups[song[by]] = groups[song[by]] || []).push(song);
-        return groups
+    let groups: Record<string, Song[] > = {}
+
+    const groupByName = (song: Song) => {
+      const alpha = song.titletranslit[0].toUpperCase();
+      const alphaGroup = alpha >= "A" ? alpha : "#";
+      (groups[alphaGroup] = groups[alphaGroup] || []).push(song);
+    }
+    const groupByLevel = (song: Song) => {
+      const levels = viewModel().sdType() == SDType.SINGLE ? song.levels.single : song.levels.double;
+      if (!levels) return;
+
+      for (const diff in levels!){
+        const level = levels[diff]
+        if (level) (groups[level] = groups[level] || []).push(song);
       }
     }
-
-    const groups: { string: SongGroup } = songs.reduce(group, {})
-    let songGroups: SongGroup[] = []
-    for (const groupVal in groups) {
-      songGroups.push({
-        songs: groups[groupVal],
-        sortBy: by,
-        sortVal: groupVal
-      })
+    const groupByVersion = (song: Song) => {
+      (groups[song.version] = groups[song.version] || []).push(song);
     }
+
+    let group: (song: Song) => void;
+    let sortGroup: (a: string, b: string) => number;
+    switch (by) {
+      case SortType.LEVEL:
+        group = groupByLevel;
+        sortGroup = (a, b) => Number(b) - Number(a) ;
+        break;
+      case SortType.NAME:
+        group = groupByName;
+        sortGroup = (a,b) => a < b ? -1 : 1
+        break;
+      case SortType.VERSION:
+        group = groupByVersion;
+        sortGroup = (a, b) => {
+          const A = Object.keys(VersionType).indexOf(a);
+          const B = Object.keys(VersionType).indexOf(b);
+          console.log(A, a, B, b);
+          return A-B;
+        };
+        break;
+    }
+
+
+    songs.forEach(song => group(song))
+    // console.log("groups", groups)
+    const songGroups: SongGroup[] = Object.keys(groups)
+    .sort(sortGroup)
+    .map((key) => ({
+      songs: groups[key],
+      sortVal: key,
+    }))
 
     return songGroups
   }
 
-  const songs = () => props.songs;
   const filteredSongs = () => filterSongs(songs());
-  const songGroups = () => groupSongs(songs());
+  const songGroups = () => groupSongs(filteredSongs());
 
+  return (
+    <For each={songGroups()}>{(songGroup, i) => 
+      <GroupedSongs 
+        songGroup={songGroup} 
+        active={() => viewModel().activeGroup() == i()} 
+        setActive={() => setViewModel().setActiveGroup(viewModel().activeGroup() == i() ? -1 : i())}
+      />
+    }</For>
+  )
+}
 
-  // createEffect(() => console.log(allSongs()))
-  // createEffect(() => console.log(`${allSongs()?.length} songs in all_songs.txt`))
-  // createEffect(() => console.log('sortBy:', sortBy()))
-  // createEffect(() => console.log('songs:', songs()))
-  // createEffect(() => console.log('songGroups:', songGroups()))
+export default function SongTab(props): JSX.Element {
 
-  // createEffect(() => console.log('tab: ', viewModel().tab()))
-  // createRenderEffect(() => setViewModel().setTab(TabName.SONGS))
-
+  /* View Model */
+  
   return (
     <Row id="song-tab">
       <Col md={3}>
@@ -133,17 +168,7 @@ export default function SongTab(props: SongTabProps): JSX.Element {
       </Col>
 
       <Col md={9} id="song-tab-list">
-        <For 
-          each={filteredSongs()} 
-          fallback={<span>{viewModel().searchStr() == "" ? "Loading songs..." : "Searching " + viewModel().searchStr()}</span>}
-        >{(song, i) =>
-          <>
-            <Nav.Link href={genSongPath(song)} class="song-link">
-              <SongRow song={song} />
-            </Nav.Link>
-            <hr/>
-          </>
-        }</For>
+        <SongTabList/>
       </Col>
     </Row>
   )

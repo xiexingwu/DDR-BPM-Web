@@ -1,5 +1,5 @@
 // import { createSignal, createEffect, createResource, createContext, useContext, For, Show } from "solid-js";
-import type { Component } from 'solid-js';
+import type { JSX } from 'solid-js';
 import { Image, Stack } from 'solid-bootstrap';
 import { Route } from "solid-app-router";
 
@@ -13,7 +13,7 @@ type SongRowProps = {
   song: Song;
 }
 
-export const SongRow: Component<SongRowProps> = (props) => {
+export default function SongRow(props: SongRowProps): JSX.Element {
 
   const { viewModel, setViewModel } = useViewModel();
 
@@ -21,6 +21,7 @@ export const SongRow: Component<SongRowProps> = (props) => {
   const chart = () => getChart(song(), viewModel());
 
   return (
+    <Stack>
       <Stack direction="horizontal" class="song-row">
         <Image
           class="jacket"
@@ -38,6 +39,10 @@ export const SongRow: Component<SongRowProps> = (props) => {
           <span>{chart().bpm_range}</span>
         </Stack>
 
+        <hr />
       </Stack>
+      <hr />
+    </Stack>
+
   )
 }

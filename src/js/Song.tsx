@@ -120,9 +120,32 @@ export const genChartDisplayBPM = (chart: Chart): JSX.Element => {
   )
 }
 
+export enum VersionType {
+    a3 = "DDR A3" as any,
+    a20p = "DDR A20 PLUS" as any,
+    a20 = "DDR A20" as any,
+    a = "DDR A" as any,
+    ddr14 = "DDR 2014" as any,
+    ddr13 = "DDR 2013" as any,
+    x3 = "DDR X3" as any,
+    x2 = "DDR X2" as any,
+    x = "DDR X" as any,
+    sn2 = "DDR SuperNOVA2" as any,
+    sn = "DDR SuperNOVA" as any,
+    ex = "DDR EXTREME" as any,
+    max2 = "DDR MAX2" as any,
+    max = "DDR MAX" as any,
+    fifth = "DDR 5th" as any,
+    fourth = "DDR 4th" as any,
+    third = "DDR 3rd" as any,
+    second = "DDR 2nd" as any,
+    first = "DDR" as any,
+}
+
+
 export type Song = {
   name: string;
-  version: string;
+  version: VersionType;
   ssc: boolean;
   title: string;
   titletranslit: string;

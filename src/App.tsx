@@ -23,29 +23,29 @@ import SettingsTab from "./components/SettingsTab";
 import SongDetail from "./components/SongDetail";
 
 
-export const [songs, setSongs] = createSignal<Song[]>([]);
 
 const fetchAllSongs = async () =>
   (await fetch("/all_songs.txt")).text().then(txt =>
     txt.split('\n').sort()
   )
 
-async function loadSongs() {
-  const allSongs = await fetchAllSongs();
-  // console.log("allSongs", allSongs);
-  const fetchSongs = allSongs.map(fetchSong);
-  let songs = await Promise.all(fetchSongs)
-  setSongs(songs)
-  // console.log("loaded songs:", songs);
-}
 
 // Main
 function App() {
 
   /* Load songs */
-  onMount(loadSongs);
 
   const { viewModel, setViewModel } = useViewModel();
+
+  const loadSongs = async () => {
+    const allSongs = await fetchAllSongs();
+    // console.log("allSongs", allSongs);
+    const fetchSongs = allSongs.map(fetchSong);
+    let songs = await Promise.all(fetchSongs)
+    setViewModel().setSongs(songs)
+    // console.log("loaded songs:", songs);
+  }
+  onMount(loadSongs);
 
   /* Setup Panes */
   const bpmPane = () => ({
@@ -57,7 +57,7 @@ function App() {
   const songPane = () => ({
     name: TabName.SONGS,
     route: TabName.SONGS,
-    component: <SongTab songs={songs()} />
+    component: <SongTab />
   });
 
   const settingsPane = () => ({
@@ -122,7 +122,7 @@ function App() {
           <Route path="/" element={bpmPane().component} />
 
           <For each={tabs()}>{(tab, i) =>
-            <Route path={tab.route as string} element={tab.component} />
+            <Route path={'/'+tab.route as string} element={tab.component} />
           }</For>
 
           <Route path={settingsPane().route} element={settingsPane().component} />
@@ -130,7 +130,7 @@ function App() {
 
         {/* Songs */}
         <Routes>
-          <For each={songs()}>{(song, i) =>
+          <For each={viewModel().songs()}>{(song, i) =>
             <Route path={genSongPath(song)} element={<SongDetail song={song} />} />
           }</For>
         </Routes>

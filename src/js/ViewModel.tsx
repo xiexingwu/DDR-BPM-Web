@@ -1,6 +1,7 @@
 import { createSignal, createContext, useContext } from "solid-js";
 import type { Accessor, Setter } from "solid-js";
 import { Tab } from "solid-bootstrap";
+import { Song } from "./Song";
 
 export enum SDType {
   SINGLE = "Single",
@@ -15,7 +16,7 @@ export enum DiffType {
 }
 
 export enum SortType {
-  NONE = "No sort",
+  NONE = "All Songs",
   NAME = "A-Z",
   LEVEL = "Level",
   VERSION = "Version"
@@ -27,6 +28,8 @@ export type ViewModel = {
   searchStr: Accessor<string>,
   sdType: Accessor<SDType>,
   diff: Accessor<DiffType>,
+  activeGroup: Accessor<number>,
+  songs: Accessor<Song[]>,
 }
 
 type SetViewModel = {
@@ -35,6 +38,8 @@ type SetViewModel = {
   setSearchStr: Setter<string>,
   setSDType: Setter<SDType>,
   setDiff: Setter<DiffType>,
+  setActiveGroup: Setter<number>,
+  setSongs: Setter<Song[]>,
 }
 
 const ViewModelContext = createContext();
@@ -45,13 +50,18 @@ export function ViewModelProvider(props) {
   const [sdType, setSDType] = createSignal(SDType.SINGLE);
   const [diff, setDiff] = createSignal(DiffType.E);
   const [searchStr, setSearchStr] = createSignal("");
+  const [activeGroup, setActiveGroup] = createSignal(-1);
   
+  const [songs, setSongs] = createSignal<Song[]>([]);
+
   const viewModel = (): ViewModel => ({
     tab,
     sortBy,
     searchStr,
     sdType,
     diff,
+    songs,
+    activeGroup,
   })
 
   const setViewModel = (): SetViewModel => ({
@@ -60,6 +70,8 @@ export function ViewModelProvider(props) {
     setSearchStr,
     setSDType,
     setDiff,
+    setSongs,
+    setActiveGroup,
   })
   
   const value = {viewModel, setViewModel};
