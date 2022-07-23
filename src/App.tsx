@@ -27,7 +27,7 @@ import { InstallButton } from "./components/InstallComponents";
 
 const fetchAllSongs = async () =>
   (await fetch("/all_songs.txt")).text().then(txt =>
-    txt.split('\n').sort()
+    txt.split('\n').filter(t => t != "").sort()
   )
 
 

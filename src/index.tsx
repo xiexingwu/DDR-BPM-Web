@@ -5,7 +5,6 @@ import { registerSW } from 'virtual:pwa-register'
 import { ViewModelProvider } from "./js/ViewModel";
 import "./css/global.css";
 
-const intervalMS = 60 * 60 * 1000
 
 import App from "./App";
 
@@ -17,7 +16,7 @@ render(() =>
   </Router>
   , document.getElementById("root") as HTMLElement);
 
-
+const intervalMS = 60 * 60 * 1000
 const updateSW = registerSW({
   onRegistered(r) {
     r && setInterval(() => {
