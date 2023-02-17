@@ -5,24 +5,15 @@ import { DiffType, SDType, ViewModel } from './ViewModel';
 import "../css/Song.css"
 import { Stack } from 'solid-bootstrap';
 
-// const emptySong:Song = {
-//   name: "", 
-//   version: "", 
-//   ssc: false, 
-//   title: "", 
-//   titletranslit: "", 
-//   song_length: 0, 
-//   per_chart: false, 
-//   levels: {},
-//   chart: [
-//   ]
-// };
+
 
 export const fetchSong = async (songName: string): Promise<Song> => {
   const url = sanitiseURL(`/data/${songName}.json`);
-  return await (await fetch(url)).json().catch(err =>
-    console.error(`Failed to load ${songName}.json`)
-  );
+  return await (await fetch(url)).json()
+    .catch(err => {
+      console.error(`Failed to load ${songName}.json`)
+      return { ...emptySong, name: songName, title: songName}
+    });
 }
 
 export const genSongVers = (song: Song): string => {
@@ -140,8 +131,32 @@ export enum VersionType {
     third = "DDR 3rd" as any,
     second = "DDR 2nd" as any,
     first = "DDR" as any,
+    unknown = "Unknown" as any,
 }
 
+const emptySong:Song = {
+  name: "", 
+  version: VersionType.unknown, 
+  ssc: false, 
+  title: "", 
+  titletranslit: "", 
+  song_length: 0, 
+  per_chart: false, 
+  levels: {
+    single: {beginner: 0},
+    double: {beginner: 0}
+  },
+  chart: [
+    {
+      dominant_bpm: 0,
+      true_min: 0,
+      true_max: 0,
+      bpm_range: "0",
+      bpms: [{st: 0, ed: 0, val: 0}],
+      stops: []
+    }
+  ]
+};
 
 export type Song = {
   name: string;
