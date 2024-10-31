@@ -43,6 +43,30 @@ function App() {
     // console.log("allSongs", allSongs);
     const fetchSongs = allSongs.map(fetchSong);
     let songs = await Promise.all(fetchSongs)
+    function fixSongSchema(song: any): Song {
+      // Map new JSON schema for songs to schema in this app
+      let old = {};
+      const unchanged = ["name", "ssc", "title", "titletranslit", "song_length", "per_chart"];
+      unchanged.map(f => old[f] = song[f]);
+      const vers = song.version.toLowerCase();
+      const versMap = {
+        "a20 plus": "a20p",
+        "2014": "ddr14",
+        "2013": "ddr13",
+        "5th": "fifth",
+        "4th": "fourth",
+        "3rd": "third",
+        "2nd": "second",
+        "1st": "first",
+      };
+      old["version"] = versMap[vers] || vers;
+      old["chart"] = song.charts;
+      old["levels"] = {};
+      old["levels"]["single"] = song.sp;
+      old["levels"]["double"] = song.dp;
+      return old as Song;
+    }
+    songs = songs.map(song => fixSongSchema(song));
     setViewModel().setSongs(songs)
     // console.log("loaded songs:", songs);
   }

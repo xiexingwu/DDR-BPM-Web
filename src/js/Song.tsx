@@ -7,17 +7,17 @@ import { Stack } from 'solid-bootstrap';
 
 
 
-export const fetchSong = async (songName: string): Promise<Song> => {
+export const fetchSong = async (songName: string): Promise<any> => {
   const url = sanitiseURL(`/data/${songName}.json`);
   return await (await fetch(url)).json()
     .catch(err => {
       console.error(`Failed to load ${songName}.json`)
-      return { ...emptySong, name: songName, title: songName}
+      return { ...emptySong, name: songName, title: songName }
     });
 }
 
 export const genSongVers = (song: Song): string => {
-  return VersionType[song.version].replace(/DDR\s?/,"");
+  return VersionType[song.version].replace(/DDR\s?/, "");
 }
 
 export const genSongPath = (song: Song): string => {
