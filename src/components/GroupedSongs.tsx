@@ -37,6 +37,7 @@ const GroupedSongsHeader: Component<GroupedSongsType> = (props) => {
       sortBy = SortType.LEVEL + " ";
       break
     case SortType.VERSION:
+      sortVal = VersionType[sortVal];
       break
     case SortType.NAME:
       break
