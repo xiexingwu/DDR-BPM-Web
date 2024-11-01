@@ -23,7 +23,7 @@ const SongDetailHeader: Component<SongDetailProps> = (props) => {
       <Stack direction="horizontal" class="song-detail-header">
         <Image
           class="jacket"
-          src={sanitiseURL(`/jackets/${song().name}-jacket.png`)}
+          src={sanitiseURL(`/jackets/${song().name}.png`)}
           width={80} height={80}
         />
 
