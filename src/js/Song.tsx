@@ -135,17 +135,17 @@ export enum VersionType {
   unknown = "Unknown" as any,
 }
 
-const emptySong:Song = {
-  name: "", 
-  version: VersionType.unknown, 
-  ssc: false, 
-  title: "", 
-  titletranslit: "", 
-  song_length: 0, 
-  per_chart: false, 
+const emptySong: Song = {
+  name: "",
+  version: VersionType.unknown,
+  ssc: false,
+  title: "",
+  titletranslit: "",
+  song_length: 0,
+  per_chart: false,
   levels: {
-    single: {beginner: 0},
-    double: {beginner: 0}
+    single: { beginner: 0 },
+    double: { beginner: 0 }
   },
   chart: [
     {
@@ -153,7 +153,7 @@ const emptySong:Song = {
       true_min: 0,
       true_max: 0,
       bpm_range: "0",
-      bpms: [{st: 0, ed: 0, val: 0}],
+      bpms: [{ st: 0, ed: 0, val: 0 }],
       stops: []
     }
   ]
