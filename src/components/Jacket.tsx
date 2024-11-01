@@ -1,5 +1,4 @@
 import { JSX } from "solid-js";
-import { sanitiseURL } from "../js/util";
 import { Image } from "solid-bootstrap";
 
 type JacketProps = {
@@ -9,7 +8,7 @@ type JacketProps = {
 export default function Jacket(props: JacketProps): JSX.Element {
   return (
     <Image class='jacket'
-      src={sanitiseURL(`/jackets/${props.songName}.png`)}
+      src={encodeURI(`/jackets/${props.songName}.png`)}
       width={64} height={64}
     />
   )

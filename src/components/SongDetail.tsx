@@ -1,7 +1,6 @@
-import { sanitiseURL } from "../js/util";
-import { createEffect, Show, JSX } from "solid-js";
+import { Show, JSX } from "solid-js";
 import type { Component } from 'solid-js';
-import { Nav, Row, Col, Image, Stack } from 'solid-bootstrap';
+import { Image, Stack } from 'solid-bootstrap';
 
 import { useViewModel } from "../js/ViewModel";
 
@@ -23,7 +22,7 @@ const SongDetailHeader: Component<SongDetailProps> = (props) => {
       <Stack direction="horizontal" class="song-detail-header">
         <Image
           class="jacket"
-          src={sanitiseURL(`/jackets/${song().name}.png`)}
+          src={encodeURI(`/jackets/${song().name}.png`)}
           width={80} height={80}
         />
 

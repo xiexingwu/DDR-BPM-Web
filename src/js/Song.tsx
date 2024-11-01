@@ -1,5 +1,4 @@
 import { Component, For, Index, JSX, Show } from 'solid-js';
-import { sanitiseURL } from './util';
 import { DiffType, SDType, ViewModel } from './ViewModel';
 
 import "../css/Song.css"
@@ -8,7 +7,7 @@ import { Stack } from 'solid-bootstrap';
 
 
 export const fetchSong = async (songName: string): Promise<any> => {
-  const url = sanitiseURL(`/data/${songName}.json`);
+  const url = encodeURI(`/data/${songName}.json`);
   return await (await fetch(url)).json()
     .catch(err => {
       console.error(`Failed to load ${songName}.json`)
