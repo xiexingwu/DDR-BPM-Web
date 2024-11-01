@@ -184,7 +184,7 @@ const SongTabList: Component = (props) => {
             active={() => viewModel().activeGroup() == i()}
             setActive={setActiveGroup(i())}
           />
-          <hr />
+          <hr/>
         </>
       }</For>
     </Stack>

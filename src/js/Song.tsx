@@ -32,19 +32,19 @@ export const genDifficultyText = (song: Song, viewModel: ViewModel, diff?: DiffT
       (props) => <span class={diff}>{levels[diff]}</span>
     ]
   } else {
-    spans = Object.entries(levels).map( ([diff,level], i) => (
+    spans = Object.entries(levels).map(([diff, level], i) => (
       (props) => <span class={diff}>{level}</span>
     ))
   }
   return (
     <div class="diff-text">
       <Index each={spans}>{(span, i) =>
-      <>
+        <>
           {span()}
-          <Show when={i < spans.length-1}>
+          <Show when={i < spans.length - 1}>
             <span> . </span>
           </Show>
-      </>
+        </>
       }</Index>
     </div>
   )
@@ -76,7 +76,7 @@ export const genChartDisplayBPM = (chart: Chart): JSX.Element => {
 
   if (bpms.length == 1) {
     texts = [<span>{bpms[0]}</span>];
-  } else{
+  } else {
     let displayBPM = chart.bpm_range;
 
     if (!bpms.includes(chart.dominant_bpm)) {

@@ -85,7 +85,7 @@ function App() {
 
   const settingsPane = () => ({
     name: TabName.SETTINGS,
-    component: <SettingsTab/>
+    component: <SettingsTab />
   })
 
   const tabs = () => [
@@ -102,7 +102,7 @@ function App() {
           <img alt="DDR BPM Logo" src="/favicon/apple-touch-icon.png" width={48} height={48} />
         </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="root-navbar"/>
+        <Navbar.Toggle aria-controls="root-navbar" />
 
         <Navbar.Collapse id="root-navbar">
 
@@ -110,22 +110,22 @@ function App() {
           <Nav onSelect={(k: TabName) => setViewModel().setTab(k)} style="width:100%">
             {/* Tabs */}
             <For each={tabs()}>{(tab, i) =>
-              <Nav.Link href={'/'+tab.name}>
+              <Nav.Link href={'/' + tab.name}>
                 {tab.name}
               </Nav.Link>
             }</For>
 
-            <div class='ms-auto'/>
+            <div class='ms-auto' />
             <InstallButton />
             {/* Dropdown menu (settings) */}
             <NavDropdown
-              align={ {md: 'start'} }
+              align={{ md: 'start' }}
               title={<Fa icon={faGear} />}
             >
-              <Nav.Link href={'/'+settingsPane().name}>
+              <Nav.Link href={'/' + settingsPane().name}>
                 {settingsPane().name}
               </Nav.Link>
-              <NavDropdown.Divider/>
+              <NavDropdown.Divider />
               <NavDropdown.Item href="https://apps.apple.com/au/app/ddr-bpm/id1628838191">
                 <>
                   <span class="me-1">iOS App</span>
@@ -147,10 +147,10 @@ function App() {
           <Route path="/" element={bpmPane().component} />
 
           <For each={tabs()}>{(tab, i) =>
-            <Route path={'/' +tab.name} element={tab.component} />
+            <Route path={'/' + tab.name} element={tab.component} />
           }</For>
 
-          <Route path={'/' +settingsPane().name} element={settingsPane().component} />
+          <Route path={'/' + settingsPane().name} element={settingsPane().component} />
         </Routes>
 
         {/* Songs */}
