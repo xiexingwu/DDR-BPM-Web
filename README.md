@@ -14,6 +14,6 @@ pnpm dev
 ```
 src = /path/to/DDR-BPM-Simfiles
 cp -v "$src"/data/all_songs.txt public/
-cp -v "$src"/build/songs/*.json public/data/
-cp -v "$src"/build/jackets-160/*.png public/jackets/
+cp -v -R "$src"/build/songs/ public/data/
+cp -v -R "$src"/build/jackets-160/ public/jackets/
 ```
