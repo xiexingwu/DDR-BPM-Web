@@ -10,7 +10,7 @@ export const fetchSong = async (songName: string): Promise<any> => {
   const url = encodeURI(`/data/${songName}.json`);
   return await (await fetch(url)).json()
     .catch(err => {
-      console.error(`Failed to load ${songName}.json`)
+      console.error(`Failed to fetch ${url}`)
       return { ...emptySong, name: songName, title: songName }
     });
 }
