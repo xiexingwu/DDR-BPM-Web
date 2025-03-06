@@ -11,9 +11,11 @@ pnpm dev
 ```
 
 ## Copy from DDR-BPM-Simfiles build
-```
-src = /path/to/DDR-BPM-Simfiles
-cp -v "$src"/data/all_songs.txt public/
-cp -v -R "$src"/build/songs/ public/data/
-cp -v -R "$src"/build/jackets-160/ public/jackets/
+```sh
+export SRC=$HOME/src/DDR-BPM-Simfiles
+cp -v "$SRC"/data/all_songs.txt public/
+cp -v -R "$SRC"/build/songs/ public/data/
+cp -v -R "$SRC"/build/jackets-160/ public/jackets/
+7z a -tzip public/data.zip -w public/data/.
+7z a -tzip public/jackets.zip -w public/jackets/.
 ```
