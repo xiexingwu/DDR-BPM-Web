@@ -53,59 +53,27 @@ export const getChart = (song: Song, viewModel: ViewModel): Chart => {
   return song.chart[0]
 }
 
-export const getChartMinMaxBPM = (chart: Chart): number[] => (
-  chart.bpm_range.split("~").filter(s => s != "").map(s => Number(s))
-)
-
-export const genChartBPMs = (chart: Chart): number[] => {
-  let bpms = getChartMinMaxBPM(chart);
-
-  if (bpms.length == 1) {
-    return bpms
-  }
-
-  return [chart.dominant_bpm, ...bpms];
+function getChartMinDomMaxBPM(chart: Chart): number[] {
+  return chart.bpm_range.split("~").filter(s => s != "").map(s => Number(s))
 }
 
-export const genChartDisplayBPM = (chart: Chart): JSX.Element => {
-  let bpms = getChartMinMaxBPM(chart);
-  let texts: JSX.Element[];
-  let trueMin = <></>;
-  let trueMax = <></>;
+export const getChartBPMs = (chart: Chart): number[] => {
+  let bpms = getChartMinDomMaxBPM(chart);
 
   if (bpms.length == 1) {
-    texts = [<span>{bpms[0]}</span>];
-  } else {
-    let displayBPM = chart.bpm_range;
-
-    if (!bpms.includes(chart.dominant_bpm)) {
-      bpms.unshift(chart.dominant_bpm)
-      bpms.sort()
-    }
-    const isDominant = (bpm) => bpm == chart.dominant_bpm ? "dominant-bpm" : "";
-    texts = bpms.map(b => <span class={isDominant(b)}>{b}</span>)
-
-    if (chart.true_min != bpms[0]) {
-      trueMin = <span>({chart.true_min}~)</span>;
-    }
-    if (chart.true_max != bpms[bpms.length - 1]) {
-      trueMax = <span>(~{chart.true_max})</span>;
-    }
+    const bpm = bpms[0]
+    return [bpm, bpm, bpm]
   }
 
+  return bpms;
+}
+
+export function DisplayBPM(props:{chart: Chart}): JSX.Element {
+  const chart = props.chart
   return (
     <Stack direction="horizontal" class="display-bpm">
       <span>BPM: </span>
-      {trueMin}
-      <For each={texts}>{(text, i) =>
-        <>
-          {text}
-          <Show when={i() < texts.length - 1}>
-            <span>~</span>
-          </Show>
-        </>
-      }</For>
-      {trueMax}
+      {chart.bpm_range}
     </Stack>
   )
 }

@@ -102,7 +102,9 @@ export default function BPMPlot(props: BPMPlotProps): JSX.Element {
     newPlot(ID, [bpms, stops], layout, config)
   }
 
-  // onMount(genBPMPlot)
+  if (chart().bpms.length > 1) {
+    onMount(genBPMPlot)
+  }
 
   return (
     <>

@@ -4,7 +4,7 @@ import { Image, Stack } from 'solid-bootstrap';
 
 import { useViewModel } from "../js/ViewModel";
 
-import { Song, getChart, genChartBPMs, genDifficultyText, genChartDisplayBPM } from '../js/Song';
+import { Song, getChart, getChartBPMs, genDifficultyText, DisplayBPM } from '../js/Song';
 import { BPMWheel } from './BPMWheel';
 
 import "../css/SongDetail.css";
@@ -19,21 +19,21 @@ type SongDetailProps = {
 const SongDetailHeader: Component<SongDetailProps> = (props) => {
   const song = () => props.song;
   return (
-      <Stack direction="horizontal" class="song-detail-header">
-        <Image
-          class="jacket"
-          src={encodeURI(`/jackets/${song().name}.png`)}
-          width={80} height={80}
-        />
+    <Stack direction="horizontal" class="song-detail-header">
+      <Image
+        class="jacket"
+        src={encodeURI(`/jackets/${song().name}.png`)}
+        width={80} height={80}
+      />
 
-        <Stack class="song-detail-title">
-          <span>{song().title}</span>
-          <Show when={song().title != song().titletranslit}>
-            <span>{song().titletranslit}</span>
-          </Show>
-        </Stack>
-
+      <Stack class="song-detail-title">
+        <span>{song().title}</span>
+        <Show when={song().title != song().titletranslit}>
+          <span>{song().titletranslit}</span>
+        </Show>
       </Stack>
+
+    </Stack>
   )
 }
 
@@ -54,18 +54,16 @@ export default function SongDetail(props: SongDetailProps): JSX.Element {
 
   const song = () => props.song;
   const chart = () => getChart(song(), viewModel());
-  const bpms = () => genChartBPMs(chart());
+  const bpms = () => getChartBPMs(chart());
 
-  // createEffect(() => console.log('sortBy:', sortBy()))
-  // createEffect(() => console.log('songs:', songs()))
-  // createEffect(() => console.log('songGroups:', songGroups()))
+  console.log(chart(), bpms())
 
   return (
     <Stack class="song-detail">
-      <BackArrow dst={'/'+TabName.SONGS}/>
-      <SongDetailHeader song={song()}/>
-      <SongDetailSummary song={song()}/>
-      {genChartDisplayBPM(chart())}
+      <BackArrow dst={'/' + TabName.SONGS} />
+      <SongDetailHeader song={song()} />
+      <SongDetailSummary song={song()} />
+      <DisplayBPM chart={chart()} />
       <BPMWheel bpms={bpms()} />
       <BPMPlot chart={chart()} />
     </Stack>

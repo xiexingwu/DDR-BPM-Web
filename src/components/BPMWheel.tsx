@@ -63,9 +63,7 @@ const BPMRow: Component<BPMRowProps> = (props) => {
 const BPMHeader: Component<BPMHeaderProps> = (props) => {
   const texts = () => {switch (props.ncol){
     case 3:
-      return ["Mostly", "Min", "Max"];
-    case 2:
-      return ["Min", "Max"];
+      return ["Min", "Mostly", "Max"];
     default:
       return ["Speed"];
   }}
