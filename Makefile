@@ -12,5 +12,11 @@ pull:
 	unzip -o -d public/data public/data.zip 
 	unzip -o -d public/jackets public/jackets.zip 
 
-deploy: pull build
+deploy-warn:
+	@printf "\n\n\n"
+	@echo "################################################################################"
+	@echo "DON'T FORGET TO RUN 'make pull' before deploying"
+	@echo "################################################################################"
+	@printf "\n\n\n"
+deploy: deploy-warn build
 	firebase deploy
