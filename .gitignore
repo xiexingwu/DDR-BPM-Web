@@ -70,8 +70,11 @@ node_modules/
 dist
 dev-dist
 
-# zip files in public
+# assets should be pulled via `make pull`
 public/*.zip
+public/all_songs.txt
+public/data/
+public/jackets/
 
 # npm config
 .npmrc
