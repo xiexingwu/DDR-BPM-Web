@@ -84,6 +84,7 @@ const BPMHeader: Component<BPMHeaderProps> = (props) => {
 export const BPMWheel: Component<BPMWheelProps> = (props) => {
   const bpms = () => props.bpms.length ? props.bpms : [200];
   const ncol = () => bpms().length;
+  console.log(bpms(), ncol())
 
   return (
     <Show

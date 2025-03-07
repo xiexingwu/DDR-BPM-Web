@@ -48,14 +48,13 @@ const pwaOptions: Partial<VitePWAOptions> = {
     navigateFallback: 'index.html',
   },
   manifest: manifest,
-  workbox:{
-    globPatterns: ['**/*.{js,css,html,ico,json,png,txt}']
-  }
+  // workbox:{
+  //   globPatterns: ['**/*.{js,css,html,ico,json,png,txt}']
+  // }
 }
 
 export default defineConfig({
   build: {
-    // sourcemap: process.env.SOURCE_MAP === 'true',
     target: 'esnext',
   },
   plugins: [

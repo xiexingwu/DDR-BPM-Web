@@ -1,6 +1,6 @@
 import { lazy, createEffect, createSignal, onMount, For } from "solid-js";
 import { Navbar, Nav, Tab, Container, NavDropdown } from "solid-bootstrap";
-import { Routes, Route } from "solid-app-router";
+import { Router, Route } from "@solidjs/router";
 import Fa from "solid-fa";
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
@@ -30,9 +30,44 @@ const fetchAllSongs = async () =>
     txt.split('\n').filter(t => t != "").sort()
   )
 
+/* Setup Panes */
+const bpmPane = () => ({
+  name: TabName.BPM,
+  component: () => <BPMTab />
+});
+
+const songPane = () => ({
+  name: TabName.SONGS,
+  component: () => <SongTab />
+});
+
+const settingsPane = () => ({
+  name: TabName.SETTINGS,
+  component: () => <SettingsTab />
+})
+
+const tabs = () => [
+  bpmPane(), songPane()
+];
+
 
 // Main
-function App() {
+export function AppLayout(props) {
+  const { viewModel, setViewModel } = useViewModel();
+  return (<Container fluid="lg">
+    <Tab.Container activeKey={viewModel().tab()}>
+
+      <AppNavbar />
+
+      <Tab.Content id="tab-content">
+        {props.children}
+      </Tab.Content>
+
+    </Tab.Container>
+  </Container>)
+}
+
+export function AppBody() {
 
   /* Load songs */
 
@@ -68,101 +103,77 @@ function App() {
     }
     songs = songs.map(song => fixSongSchema(song));
     setViewModel().setSongs(songs)
-    // console.log("loaded songs:", songs);
   }
+
   onMount(loadSongs);
 
-  /* Setup Panes */
-  const bpmPane = () => ({
-    name: TabName.BPM,
-    component: <BPMTab />
-  });
-
-  const songPane = () => ({
-    name: TabName.SONGS,
-    component: <SongTab />
-  });
-
-  const settingsPane = () => ({
-    name: TabName.SETTINGS,
-    component: <SettingsTab />
-  })
-
-  const tabs = () => [
-    bpmPane(), songPane()
-  ];
-
-
   /* Main app */
-  return (<Container fluid="lg">
-    <Tab.Container activeKey={viewModel().tab()}>
-      <Navbar sticky="top" bg="light" expand>
+  return (
+    <>
+      {/* Tabs */}
+      < Route path="/" component={bpmPane().component} />
 
-        <Navbar.Brand href="/">
-          <img alt="DDR BPM Logo" src="/favicon/apple-touch-icon.png" width={48} height={48} />
-        </Navbar.Brand>
+      <For each={tabs()}>{(tab, i) =>
+        <Route path={'/' + tab.name} component={tab.component} />
+      }</For>
 
-        <Navbar.Toggle aria-controls="root-navbar" />
+      <Route path={'/' + settingsPane().name} component={settingsPane().component} />
 
-        <Navbar.Collapse id="root-navbar">
-
-          {/* Tabs */}
-          <Nav onSelect={(k: TabName) => setViewModel().setTab(k)} style="width:100%">
-            {/* Tabs */}
-            <For each={tabs()}>{(tab, i) =>
-              <Nav.Link href={'/' + tab.name}>
-                {tab.name}
-              </Nav.Link>
-            }</For>
-
-            <div class='ms-auto' />
-            <InstallButton />
-            {/* Dropdown menu (settings) */}
-            <NavDropdown
-              align={{ md: 'start' }}
-              title={<Fa icon={faGear} />}
-            >
-              <Nav.Link href={'/' + settingsPane().name}>
-                {settingsPane().name}
-              </Nav.Link>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="https://apps.apple.com/au/app/ddr-bpm/id1628838191">
-                <>
-                  <span class="me-1">iOS App</span>
-                  <Fa icon={faAppStoreIos} />
-                </>
-              </NavDropdown.Item>
-              <NavDropdown.Item href="https://www.paypal.com/donate/?hosted_button_id=2R64RY6ZL52EW">
-                Donate
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-
-      </Navbar>
-
-      <Tab.Content id="tab-content">
-        {/* Tabs */}
-        <Routes>
-          <Route path="/" element={bpmPane().component} />
-
-          <For each={tabs()}>{(tab, i) =>
-            <Route path={'/' + tab.name} element={tab.component} />
-          }</For>
-
-          <Route path={'/' + settingsPane().name} element={settingsPane().component} />
-        </Routes>
-
-        {/* Songs */}
-        <Routes>
-          <For each={viewModel().songs()}>{(song, i) =>
-            <Route path={genSongPath(song)} element={<SongDetail song={song} />} />
-          }</For>
-        </Routes>
-      </Tab.Content>
-
-    </Tab.Container>
-  </Container>)
+      {/* Songs */}
+      <For each={viewModel().songs()}>{(song, i) =>
+        <Route path={genSongPath(song)} component={() => <SongDetail song={song} />} />
+      }</For>
+    </>
+  )
 }
 
-export default App;
+function AppNavbar() {
+  const { viewModel, setViewModel } = useViewModel();
+  return (
+    <Navbar sticky="top" bg="light" expand>
+
+      <Navbar.Brand href="/">
+        <img alt="DDR BPM Logo" src="/favicon/apple-touch-icon.png" width={48} height={48} />
+      </Navbar.Brand>
+
+      <Navbar.Toggle aria-controls="root-navbar" />
+
+      <Navbar.Collapse id="root-navbar">
+
+        {/* Tabs */}
+        <Nav onSelect={(k: TabName) => setViewModel().setTab(k)} style="width:100%">
+          {/* Tabs */}
+          <For each={tabs()}>{(tab, i) =>
+            <Nav.Link href={'/' + tab.name}>
+              {tab.name}
+            </Nav.Link>
+          }</For>
+
+          <div class='ms-auto' />
+          <InstallButton />
+          {/* Dropdown menu (settings) */}
+          <NavDropdown
+            align={{ md: 'start' }}
+            title={<Fa icon={faGear} />}
+          >
+            <Nav.Link href={'/' + settingsPane().name}>
+              {settingsPane().name}
+            </Nav.Link>
+            <NavDropdown.Divider />
+            <NavDropdown.Item href="https://apps.apple.com/au/app/ddr-bpm/id1628838191">
+              <>
+                <span class="me-1">iOS App</span>
+                <Fa icon={faAppStoreIos} />
+              </>
+            </NavDropdown.Item>
+            <NavDropdown.Item href="https://www.paypal.com/donate/?hosted_button_id=2R64RY6ZL52EW">
+              Donate
+            </NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
+      </Navbar.Collapse>
+
+    </Navbar>
+  )
+}
+

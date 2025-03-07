@@ -1,20 +1,21 @@
 import { render } from "solid-js/web";
-import { Router } from "solid-app-router";
+import { Router } from "@solidjs/router";
 import { registerSW } from 'virtual:pwa-register'
 
 import { ViewModelProvider } from "./js/ViewModel";
 import "./css/global.css";
 
 
-import App from "./App";
+import {AppLayout, AppBody} from "./App";
 
 render(() =>
-  <Router>
-    <ViewModelProvider>
-      <App/>
-    </ViewModelProvider>
+  <ViewModelProvider>
+  <Router root={AppLayout}>
+      <AppBody/>
   </Router>
-  , document.getElementById("root") as HTMLElement);
+  </ViewModelProvider>
+  , document.getElementById("root")!
+);
 
 const intervalMS = 60 * 60 * 1000
 const updateSW = registerSW({

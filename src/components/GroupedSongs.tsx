@@ -6,8 +6,9 @@ import { faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons
 import { library } from '@fortawesome/fontawesome-svg-core';
 
 import { SortType, useViewModel } from '../js/ViewModel';
-import { genSongPath, Song } from '../js/Song';
+import { genSongPath, Song, VersionType } from '../js/Song';
 const SongRow = lazy(() => import("./SongRow"))
+// import SongRow from "./SongRow"
 
 library.add(faChevronDown, faChevronRight)
 
@@ -74,7 +75,7 @@ const GroupedSongsList: Component<GroupedSongsType> = (props) => {
       <For
         each={songGroup().songs}
       >{(song, i) =>
-        <Suspense>
+        <Suspense fallback={<p>loading...</p>}>
           <Nav.Link href={genSongPath(song)} class="song-link">
             <SongRow song={song} />
           </Nav.Link>

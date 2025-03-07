@@ -27,9 +27,9 @@ const genBpmsData = (chart: Chart): XYData => {
 const genStopsData = (bpms: XYData, chart: Chart): XYData => {
   const n = chart.bpms.length;
   const stops = chart.stops;
-  const findBpmAtTime = (time: number):number => {
+  const findBpmAtTime = (time: number): number => {
     const i = bpms.x.findIndex(t => t >= time)!
-    return bpms.y[i -1]
+    return bpms.y[i - 1]
   }
 
   let x = stops.map(b => b.st)
@@ -47,7 +47,7 @@ export default function BPMPlot(props: BPMPlotProps): JSX.Element {
       ...genBpmsData(chart()),
       name: 'BPM',
       mode: 'lines',
-      hoverinfo:"skip",
+      hoverinfo: "skip",
     }
 
     const stops: Partial<Data> = {
@@ -72,7 +72,7 @@ export default function BPMPlot(props: BPMPlotProps): JSX.Element {
         dtick: 50,
         fixedrange: true,
       },
-      legend:{
+      legend: {
         // showlegend: false,
         yanchor: "top",
         xanchor: "left",
@@ -102,14 +102,12 @@ export default function BPMPlot(props: BPMPlotProps): JSX.Element {
     newPlot(ID, [bpms, stops], layout, config)
   }
 
-  if (chart().bpms.length > 1 || chart().stops.length ) {
-    onMount(genBPMPlot)
-  }
+  // onMount(genBPMPlot)
 
   return (
     <>
       <span>
-        Plot is buggy on mobile: it might not let you scroll around the page when dragging on the plot directly. 
+        Plot is buggy on mobile: it might not let you scroll around the page when dragging on the plot directly.
         Try dragging around the edges of the screen (or this text) instead.
       </span>
       <div id={ID}>
