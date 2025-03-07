@@ -4,9 +4,13 @@ install:
 build:
 	pnpm run build
 
-zip:
-	7z a -tzip public/data.zip -w public/data/.
-	7z a -tzip public/jackets.zip -w public/jackets/.
+pull:
+	wget -O public/data.zip https://github.com/xiexingwu/DDR-BPM-prep/releases/download/Latest/songs.zip
+	wget -O public/jackets.zip https://github.com/xiexingwu/DDR-BPM-prep/releases/download/Latest/jackets.zip
+	wget -O public/all_songs.txt https://github.com/xiexingwu/DDR-BPM-prep/releases/download/Latest/all_songs.txt
 
-deploy: build zip
+	unzip -o -d public/data public/data.zip 
+	unzip -o -d public/jackets public/jackets.zip 
+
+deploy: pull build
 	firebase deploy
